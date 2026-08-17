@@ -1121,6 +1121,174 @@ class EngineSampler extends EngineNeon {
         }
     }
 }
+
+/* =========================================================
+   MOTOR 5: GRAVEDAD CONTINUA (BIO-FLUIDO & ORBITAS)
+   Física de fluidos bioluminiscentes con gravedad y audio NOAA
+   ========================================================= */
+class EngineGravity extends EngineSampler {
+    constructor() {
+        super();
+        this.particles = [];
+        this.maxParticles = 600;
+        this.G = 0.8;
+        this.damping = 0.985;
+    }
+
+    triggerGenesis() {
+        this.particles = [];
+        this.generation = 0;
+        let centerX = canvas.width / 2;
+        let centerY = canvas.height / 2;
+        
+        for (let g = 0; g < 2; g++) {
+            let gx = centerX + (g === 0 ? -180 : 180);
+            let gy = centerY + (g === 0 ? -100 : 100);
+            let hueBase = g === 0 ? 190 : 280;
+            
+            for (let i = 0; i < 150; i++) {
+                let angle = Math.random() * Math.PI * 2;
+                let dist = Math.random() * 140 + 10;
+                let speed = Math.sqrt(this.G * 150 / dist) * 0.8;
+                
+                this.particles.push({
+                    x: gx + Math.cos(angle) * dist,
+                    y: gy + Math.sin(angle) * dist,
+                    vx: -Math.sin(angle) * speed + (Math.random() - 0.5),
+                    vy: Math.cos(angle) * speed + (Math.random() - 0.5),
+                    radius: Math.random() * 2.5 + 1.5,
+                    mass: Math.random() * 3 + 1,
+                    hue: hueBase + (Math.random() * 40 - 20)
+                });
+            }
+        }
+    }
+
+    clear() {
+        this.particles = [];
+        this.generation = 0;
+        if (genCountSpan) genCountSpan.innerText = 0;
+        if (popCountSpan) popCountSpan.innerText = 0;
+    }
+
+    darVida(x, y) {
+        for (let i = 0; i < 15; i++) {
+            if (this.particles.length >= this.maxParticles) {
+                this.particles.shift();
+            }
+            let angle = Math.random() * Math.PI * 2;
+            let speed = Math.random() * 3 + 1;
+            let currentPalette = paletteSelector.value;
+            let hue = 190;
+            if (currentPalette === 'gold') hue = 35;
+            else if (currentPalette === 'silver') hue = 200;
+            else if (currentPalette === 'matrix') hue = 130;
+            else if (currentPalette === 'abyss') hue = 210 + Math.random() * 60;
+            
+            this.particles.push({
+                x: x + Math.cos(angle) * 10,
+                y: y + Math.sin(angle) * 10,
+                vx: Math.cos(angle) * speed,
+                vy: Math.sin(angle) * speed,
+                radius: Math.random() * 3 + 1.5,
+                mass: Math.random() * 2 + 1,
+                hue: hue + (Math.random() * 30 - 15)
+            });
+        }
+    }
+
+    computeNextGeneration() {
+        this.generation++;
+        let pCount = this.particles.length;
+        
+        for (let i = 0; i < pCount; i++) {
+            let p1 = this.particles[i];
+            
+            for (let j = i + 1; j < pCount; j++) {
+                let p2 = this.particles[j];
+                let dx = p2.x - p1.x;
+                let dy = p2.y - p1.y;
+                let distSq = dx * dx + dy * dy + 100;
+                let dist = Math.sqrt(distSq);
+                
+                if (dist < 220) {
+                    let force = (this.G * p1.mass * p2.mass) / distSq;
+                    let fx = (dx / dist) * force;
+                    let fy = (dy / dist) * force;
+                    
+                    if (dist < 20) {
+                        fx -= (dx / dist) * 0.4;
+                        fy -= (dy / dist) * 0.4;
+                    }
+                    
+                    p1.vx += fx / p1.mass;
+                    p1.vy += fy / p1.mass;
+                    p2.vx -= fx / p2.mass;
+                    p2.vy -= fy / p2.mass;
+                }
+            }
+
+            p1.vx *= this.damping;
+            p1.vy *= this.damping;
+            p1.x += p1.vx;
+            p1.y += p1.vy;
+
+            if (p1.x < 0) { p1.x = 0; p1.vx *= -0.8; }
+            if (p1.x > canvas.width) { p1.x = canvas.width; p1.vx *= -0.8; }
+            if (p1.y < 0) { p1.y = 0; p1.vy *= -0.8; }
+            if (p1.y > canvas.height) { p1.y = canvas.height; p1.vy *= -0.8; }
+        }
+
+        if (genCountSpan) genCountSpan.innerText = this.generation;
+        if (popCountSpan) popCountSpan.innerText = pCount;
+
+        if (this.generation % 180 === 0 && pCount > 20) {
+            this.triggerPing();
+        }
+    }
+
+    draw() {
+        let glowVal = parseInt(glowSlider.value);
+        let trailVal = parseInt(trailSlider.value) / 100;
+        
+        ctx.fillStyle = `rgba(5, 5, 5, ${1 - trailVal})`;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        let pCount = this.particles.length;
+        
+        ctx.lineWidth = 0.5;
+        for (let i = 0; i < pCount; i++) {
+            let p1 = this.particles[i];
+            for (let j = i + 1; j < pCount; j++) {
+                let p2 = this.particles[j];
+                let dx = p2.x - p1.x;
+                let dy = p2.y - p1.y;
+                let dist = Math.sqrt(dx * dx + dy * dy);
+                
+                if (dist < 70) {
+                    let alpha = (1 - dist / 70) * 0.4;
+                    ctx.strokeStyle = `hsla(${p1.hue}, 100%, 65%, ${alpha})`;
+                    ctx.beginPath();
+                    ctx.moveTo(p1.x, p1.y);
+                    ctx.lineTo(p2.x, p2.y);
+                    ctx.stroke();
+                }
+            }
+        }
+
+        ctx.shadowBlur = glowVal;
+        for (let i = 0; i < pCount; i++) {
+            let p = this.particles[i];
+            ctx.shadowColor = `hsl(${p.hue}, 100%, 50%)`;
+            ctx.fillStyle = `hsl(${p.hue}, 100%, 70%)`;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        ctx.shadowBlur = 0;
+    }
+}
+
 // INICIALIZACIÓN DEL MULTIVERSO
 let activeEngine = new EngineNeon(); // Empezamos en Neon por defecto
 activeEngine.triggerGenesis();
@@ -1156,6 +1324,8 @@ engineSelector.addEventListener('change', (e) => {
         activeEngine = new EngineAudio();
     } else if (e.target.value === 'sampler') {
         activeEngine = new EngineSampler();
+    } else if (e.target.value === 'gravity') {
+        activeEngine = new EngineGravity();
     }
     
     activeEngine.triggerGenesis();
