@@ -1,5 +1,10 @@
 # Changelog: Quimera Automata (Juego de la Vida)
 
+## [1.6.0] - Motor 5 (Bio-Fluid Gravity), Favicon & Créditos
+- **MOTOR 5 (Bio-Fluid Gravity):** Implementación del quinto motor físico con gravedad bio-fluida cyberpunk, dinámica de tensión superficial celular y cascadas de masa orgánica.
+- **FAVICON:** Favicon vectorial bioluminiscente (`favicon.svg`) integrado en la cabecera.
+- **CRÉDITOS:** Sección de créditos de Quimera Automata integrados en el juego.
+
 ## [1.5.0] - Océano Vivo y Entropía Cósmica (Fase 4)
 - **AUDIO: Biblioteca NOAA Científica (9 samples profesionales)**
   - Reemplazo total de los samples previos por grabaciones oficiales de la NOAA (National Oceanic and Atmospheric Administration).

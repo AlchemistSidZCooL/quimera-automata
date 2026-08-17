@@ -1,6 +1,6 @@
-# Quimera Automata (El Juego de la Vida)
+# Quimera Automata (El Juego de la Vida) - Cyberpunk Edition
 
-**Versión:** 1.5.0
+**Versión:** 1.6.0
 **Tecnología:** HTML5 Canvas, Vanilla JavaScript, CSS3, Web Audio API
 **Estética:** Cyberpunk Luxury / CRT Analógico / Alquímico
 
@@ -10,10 +10,15 @@ Esta es una implementación del clásico autómata celular matemático de **John
 ### Modificación Genética ("Inmigración de Conway")
 Esta versión de *Quimera Alchimest* no se limita a células binarias (blanco o negro). Incorpora un motor genético donde **cada célula posee un color (ADN Neón)**. Cuando tres células se unen para dar vida a una nueva, la hija hereda matemáticamente la mezcla de color de sus tres padres, generando hermosas ondas de color cyberpunk en tiempo real. Además, cuenta con distintas **Paletas Cromáticas** (Cyberpunk, Luxury Gold, Silver, Matrix, Abismo Oceánico).
 
-### Sinfonía Generativa y Biosfera Realista (Motor de Audio Oceánico)
-El simulador cuenta con dos motores acústicos integrados vía Web Audio API:
+### Multiverso de Motores Físicos y Acústicos
+El simulador cuenta con 5 motores acústicos y físicos integrados vía Web Audio API y Canvas:
 - **Motor 3 (Sintético):** Genera un "Viento Cósmico" interactivo y sintetiza cantos matemáticos de ballenas jorobadas y orcas mediante modulación de frecuencia (FM) e inyección LFO.
-- **Motor 4 (Biosfera Realista):** Actúa como un Sampler Asíncrono de alta calidad. Descarga directamente en memoria grabaciones científicas submarinas (Ballenas Jorobadas en la Antártida) de la NOAA y altera su pitch y tiempo (Playback Rate) y reverberación espaciada matemáticamente según el algoritmo para generar cantos emocionales dinámicos infinitos.
+- **Motor 4 (Biosfera Realista):** Sampler Asíncrono de alta calidad con grabaciones científicas submarinas de la NOAA (Antártida) y alteración de pitch/tiempo según la evolución celular.
+- **Motor 5 (Bio-Fluid Gravity):** Motor de física gravitacional bio-fluida cyberpunk donde la gravedad celular influye dinámicamente en la cascada y tensión superficial de las colonias.
+
+### Favicon y Créditos
+- **Favicon Bioluminiscente:** Icono SVG bioluminiscente exclusivo integrado en la cabecera.
+- **Créditos Finales Quimera Automata:** Reconocimiento de desarrollo y branding.
 
 ### Sistema de Prevención de Estancamiento (Idle Catastrophes)
 El universo interviene automáticamente: Si las células caen en un patrón estático permanente o un bucle aburrido sin evolución biológica detectable durante 4 segundos, el núcleo de la IA dispara una catástrofe global al azar (Impacto de Asteroide, Terremoto, Extinción Masiva, o Inversión de Big Bang) para forzar un nuevo ciclo orgánico de la vida.
