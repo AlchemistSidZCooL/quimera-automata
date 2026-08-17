@@ -13,6 +13,10 @@ const btnRandom = document.getElementById('btn-random');
 const btnMutate = document.getElementById('btn-mutate');
 const btnFullscreen = document.getElementById('btn-fullscreen');
 const btnMute = document.getElementById('btn-mute');
+const btnHelp = document.getElementById('btn-help');
+const helpModal = document.getElementById('help-modal');
+const btnCloseHelp = document.getElementById('btn-close-help');
+const btnConfirmHelp = document.getElementById('btn-confirm-help');
 const btnToggleUI = document.getElementById('btn-toggle-ui');
 const uiContainer = document.getElementById('ui-container');
 const engineSelector = document.getElementById('engine-selector');
@@ -1243,6 +1247,23 @@ btnFullscreen.addEventListener('click', () => {
         }
     }
 });
+
+// Modal de Instrucciones / Ayuda
+function openHelpModal() {
+    if (helpModal) helpModal.classList.add('active');
+}
+function closeHelpModal() {
+    if (helpModal) helpModal.classList.remove('active');
+}
+
+if (btnHelp) btnHelp.addEventListener('click', openHelpModal);
+if (btnCloseHelp) btnCloseHelp.addEventListener('click', closeHelpModal);
+if (btnConfirmHelp) btnConfirmHelp.addEventListener('click', closeHelpModal);
+if (helpModal) {
+    helpModal.addEventListener('click', (e) => {
+        if (e.target === helpModal) closeHelpModal();
+    });
+}
 
 // Ratón
 let isDrawing = false;

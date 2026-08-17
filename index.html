@@ -44,6 +44,7 @@
                 <button id="btn-mutate" class="btn neo-btn btn-mutate">MUTACIÓN (Neón)</button>
                 <button id="btn-fullscreen" class="btn neo-btn">PANTALLA COMPLETA</button>
                 <button id="btn-mute" class="btn neo-btn" style="border-color: #ff9900; color: #ff9900;">MUTE (Sonido)</button>
+                <button id="btn-help" class="btn neo-btn btn-help">❓ CÓMO JUGAR</button>
             </div>
             
             <div class="stats">
@@ -118,8 +119,51 @@
     <!-- El Lienzo Divino donde ocurre la magia -->
     <canvas id="universe"></canvas>
     
-    <!-- Filtro CRT (Scanlines + Vignette) -->
-    <div id="crt-overlay"></div>
+    <!-- Modal Guía de Uso / Instrucciones -->
+    <div id="help-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button id="btn-close-help" class="modal-close">&times;</button>
+            <h2 class="modal-title">🐋 GUÍA DE USO Y SIMULACIÓN</h2>
+            <p class="modal-subtitle">Quimera Automata — Juego de la Vida (Conway)</p>
+            
+            <div class="modal-body">
+                <div class="help-section">
+                    <h3>1. 🖱️ Sembrar Vida (Interactividad)</h3>
+                    <p>Haz <strong>clic izquierdo y arrastra</strong> el ratón sobre cualquier parte del lienzo negro para sembrar células vivas en tiempo real.</p>
+                </div>
+                
+                <div class="help-section">
+                    <h3>2. 🖌️ Pincel Biológico (Patrones)</h3>
+                    <p>En el panel de control puedes cambiar la herramienta de siembra:</p>
+                    <ul>
+                        <li><strong>Píxel Simple:</strong> Dibuja puntos celda a celda.</li>
+                        <li><strong>Nave Planeadora (Glider):</strong> Dispara naves autónomas que viajan cruzando el lienzo.</li>
+                        <li><strong>R-Pentominó:</strong> Inyecta una reacción en cadena caótica de más de 1100 generaciones.</li>
+                        <li><strong>Cañón Gosper:</strong> Ametralladora continua generadora de vida.</li>
+                    </ul>
+                </div>
+
+                <div class="help-section">
+                    <h3>3. 🐋 Biosfera y Canto Cetáceo (Audio NOAA)</h3>
+                    <p>Selecciona <strong>MOTOR 4: Biosfera Realista</strong> y la paleta <strong>Abismo Oceánico</strong>. El motor sintonizará vocalizaciones reales de Ballenas Jorobadas, Orcas y Belugas captadas por hidrófonos de la NOAA.</p>
+                </div>
+
+                <div class="help-section">
+                    <h3>4. ☄️ Sistema Anti-Estancamiento (µEntropía)</h3>
+                    <p>Si la simulación se congela o entra en un bucle repetitivo durante 3 segundos, la naturaleza desatará cataclismos automáticos (Impactos de Meteorito, Invasión de Naves o Extinciones) para reiniciar el ciclo evolutivo.</p>
+                </div>
+
+                <div class="help-section">
+                    <h3>5. 👁️ Visión Pura y Pantalla Completa</h3>
+                    <p>Haz clic en <strong>VISIÓN PURA</strong> para ocultar los paneles y dejar el universo como un lienzo artístico inmersivo (puedes seguir dibujando en toda la pantalla).</p>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button id="btn-confirm-help" class="btn neo-btn btn-mutate">ENTENDIDO (Comenzar)</button>
+            </div>
+        </div>
+    </div>
 
     <script src="game.js"></script>
 </body>
