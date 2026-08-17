@@ -433,3 +433,17 @@ body, html {
     font-family: 'Fira Code', monospace;
     font-size: 0.78rem;
 }
+
+/* Barra de Créditos */
+.credits-bar {
+    margin-top: 12px;
+    padding-top: 8px;
+    border-top: 1px dashed rgba(0, 243, 255, 0.3);
+    font-size: 0.75rem;
+    color: var(--neon-gold);
+    text-align: center;
+    letter-spacing: 0.5px;
+}
+.credits-bar strong {
+    color: var(--neon-cyan);
+}
