@@ -1435,12 +1435,34 @@ if (helpModal) {
     });
 }
 
-// Ratón
+// Modal La Gorra Digital
+const btnGorra = document.getElementById('btn-gorra');
+const gorraModal = document.getElementById('gorra-modal');
+const btnCloseGorra = document.getElementById('btn-close-gorra');
+const btnConfirmGorra = document.getElementById('btn-confirm-gorra');
+
+function openGorraModal() {
+    if (gorraModal) gorraModal.classList.add('active');
+}
+function closeGorraModal() {
+    if (gorraModal) gorraModal.classList.remove('active');
+}
+
+if (btnGorra) btnGorra.addEventListener('click', openGorraModal);
+if (btnCloseGorra) btnCloseGorra.addEventListener('click', closeGorraModal);
+if (btnConfirmGorra) btnConfirmGorra.addEventListener('click', closeGorraModal);
+if (gorraModal) {
+    gorraModal.addEventListener('click', (e) => {
+        if (e.target === gorraModal) closeGorraModal();
+    });
+}
+
+// Ratón & Táctil en Móviles
 let isDrawing = false;
 function handleInteraction(e) {
     let rect = canvas.getBoundingClientRect();
-    let clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    let clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    let clientX = (e.touches && e.touches.length > 0) ? e.touches[0].clientX : e.clientX;
+    let clientY = (e.touches && e.touches.length > 0) ? e.touches[0].clientY : e.clientY;
     activeEngine.darVida(clientX - rect.left, clientY - rect.top);
 }
 
@@ -1454,15 +1476,21 @@ canvas.addEventListener('mousemove', (e) => { if (isDrawing && brushSelector.val
 
 canvas.addEventListener('touchstart', (e) => { 
     isDrawing = true; 
+    e.preventDefault();
     handleInteraction(e); 
     if (activeEngine.triggerPing) activeEngine.triggerPing();
-});
+}, { passive: false });
+
 canvas.addEventListener('touchend', () => isDrawing = false);
-canvas.addEventListener('touchmove', (e) => { if (isDrawing && brushSelector.value === 'dot') handleInteraction(e); });
+canvas.addEventListener('touchmove', (e) => { 
+    if (isDrawing && brushSelector.value === 'dot') {
+        e.preventDefault();
+        handleInteraction(e); 
+    }
+}, { passive: false });
 
 window.addEventListener('resize', () => {
     // Para simplificar la arquitectura, un resize redimensiona el motor actual
-    // y lo reinicia si cambia demasiado, o podemos dejarlo como está.
     activeEngine.triggerGenesis();
 });
 
@@ -1473,3 +1501,4 @@ setTimeout(() => {
         quote.classList.add('quote-hidden');
     }
 }, 4000);
+
