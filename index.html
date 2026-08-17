@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conway's Game of Life | Quimera Alchemist Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Playfair+Display:ital,wght@0,400;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <button id="btn-toggle-ui" class="toggle-ui-btn">VISIÓN PURA (Ocultar UI)</button>
+
+    <div class="overlay-container" id="ui-container">
+        <!-- Cita Poética Alquímica -->
+        <div class="poetic-quote">
+            <p>"Para ver un Mundo en un Grano de Arena<br>
+            Y un Cielo en una Flor Silvestre,<br>
+            Abarca el Infinito en la palma de tu mano<br>
+            Y la Eternidad en una hora."</p>
+            <span>~ William Blake</span>
+        </div>
+
+        <!-- Controles Cyberpunk -->
+        <div class="control-panel">
+            <h1 class="title">QUIMERA AUTOMATA <span>v1.0</span></h1>
+            <p class="subtitle">Simulación de Vida Matemática de J.H. Conway</p>
+            
+            <div class="tool-group" style="margin-bottom: 20px; border-bottom: 1px dashed var(--neon-cyan); padding-bottom: 10px;">
+                <label style="color: var(--neon-gold); font-size: 0.9rem;">>_ SELECCIONAR MULTIVERSO:</label>
+                <select id="engine-selector" class="neo-select" style="border-color: var(--neon-gold); margin-top: 5px;">
+                    <option value="classic">MOTOR 1: Conway Clásico (Retro)</option>
+                    <option value="neon" selected>MOTOR 2: Neón Genético (Actual)</option>
+                    <option value="audio">MOTOR 3: Sinfonía Generativa (Audio)</option>
+                    <option value="sampler">MOTOR 4: Biosfera Realista (Audios Reales)</option>
+                    <option value="gravity" disabled>MOTOR 5: Gravedad Continua (Próximamente)</option>
+                </select>
+            </div>
+
+            <div class="buttons">
+                <button id="btn-start" class="btn neo-btn">INICIAR (Evolución)</button>
+                <button id="btn-pause" class="btn neo-btn">PAUSAR (Estasis)</button>
+                <button id="btn-clear" class="btn neo-btn btn-danger">PURGAR (Vacío)</button>
+                <button id="btn-random" class="btn neo-btn btn-magic">GÉNESIS (Caos)</button>
+                <button id="btn-mutate" class="btn neo-btn btn-mutate">MUTACIÓN (Neón)</button>
+                <button id="btn-fullscreen" class="btn neo-btn">PANTALLA COMPLETA</button>
+                <button id="btn-mute" class="btn neo-btn" style="border-color: #ff9900; color: #ff9900;">MUTE (Sonido)</button>
+            </div>
+            
+            <div class="stats">
+                <div>Generación: <span id="gen-count">0</span></div>
+                <div>Población Viva: <span id="pop-count">0</span></div>
+            </div>
+
+            <!-- NUEVAS HERRAMIENTAS GOD MODE -->
+            <div id="god-mode-panel" class="god-mode-tools">
+                <div class="tool-group">
+                    <label>>_ PALETA CROMÁTICA:</label>
+                    <select id="palette-selector" class="neo-select">
+                        <option value="cyberpunk">Cyberpunk Neón (Mix)</option>
+                        <option value="gold">Luxury Gold (Oro Puro)</option>
+                        <option value="silver">Luxury Silver (Plata Pura)</option>
+                        <option value="matrix">Código Matrix (Verdes)</option>
+                        <option value="abyss">Abismo Oceánico (Azules)</option>
+                    </select>
+                </div>
+                
+                <div class="tool-group" id="marine-toggles" style="display: none; margin-top: -10px; margin-bottom: 10px;">
+                    <label style="color: #00ffcc; font-size: 11px; cursor: pointer; display: flex; align-items: center; gap: 5px;">
+                        <input type="checkbox" id="solo-ballenas" checked> 
+                        AISLAR CANTO DE BALLENA
+                    </label>
+                </div>
+
+                <div class="tool-group">
+                    <label>>_ CRONOS (Velocidad): <span id="speed-val">50</span>ms</label>
+                    <input type="range" id="speed-slider" min="1" max="200" value="50" class="neo-slider">
+                </div>
+                
+                <div class="tool-group">
+                    <label>>_ BRILLO NEÓN: <span id="glow-val">100</span>%</label>
+                    <input type="range" id="glow-slider" min="0" max="100" value="100" class="neo-slider">
+                </div>
+                
+                <div class="tool-group">
+                    <label>>_ RASTRO FANTASMA: <span id="trail-val">85</span>%</label>
+                    <input type="range" id="trail-slider" min="0" max="100" value="85" class="neo-slider">
+                </div>
+                
+                <div class="tool-group">
+                    <label>>_ PINCEL BIOLÓGICO:</label>
+                    <select id="brush-selector" class="neo-select">
+                        <option value="dot">Píxel Simple (Dedo de Dios)</option>
+                        <option value="glider">Nave Planeadora (5 células)</option>
+                        <option value="r_pentomino">R-Pentomino (Caos de 5 células)</option>
+                        <option value="glider_gun">Cañón Gosper (Ametralladora)</option>
+                        <option value="pulsar">Pulsar (Estrella Parpadeante)</option>
+                    </select>
+                </div>
+
+                <div class="tool-group">
+                    <label>>_ LEYES DEL UNIVERSO:</label>
+                    <select id="rule-selector" class="neo-select">
+                        <option value="conway">Conway Clásico (B3/S23)</option>
+                        <option value="highlife">HighLife (B36/S23) [Replicantes]</option>
+                        <option value="maze">Laberinto Cyberpunk (B3/S12345)</option>
+                        <option value="daynight">Día y Noche (B3678/S34678)</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="instructions">
+                <p>>_ Haz CLIC y ARRASTRA sobre el lienzo negro para inyectar vida.</p>
+                <p>>_ Observa la belleza fractal y los rastros de decaimiento.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- El Lienzo Divino donde ocurre la magia -->
+    <canvas id="universe"></canvas>
+    
+    <!-- Filtro CRT (Scanlines + Vignette) -->
+    <div id="crt-overlay"></div>
+
+    <script src="game.js"></script>
+</body>
+</html>
