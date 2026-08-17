@@ -115,14 +115,16 @@ class EngineClassic {
 
     resize() {
         let dpr = window.devicePixelRatio || 1;
-        canvas.width = window.innerWidth * dpr;
-        canvas.height = window.innerHeight * dpr;
-        canvas.style.width = window.innerWidth + 'px';
-        canvas.style.height = window.innerHeight + 'px';
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0); // Reiniciar y aplicar escala limpia
+        let w = window.innerWidth;
+        let h = window.innerHeight;
+        canvas.width = Math.round(w * dpr);
+        canvas.height = Math.round(h * dpr);
+        canvas.style.width = w + 'px';
+        canvas.style.height = h + 'px';
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-        this.cols = Math.floor(window.innerWidth / this.resolution);
-        this.rows = Math.floor(window.innerHeight / this.resolution);
+        this.cols = Math.floor(w / this.resolution);
+        this.rows = Math.floor(h / this.resolution);
         this.grid = new Array(this.cols).fill(null).map(() => new Array(this.rows).fill(0));
     }
 
@@ -237,14 +239,16 @@ class EngineNeon {
 
     resize() {
         let dpr = window.devicePixelRatio || 1;
-        canvas.width = window.innerWidth * dpr;
-        canvas.height = window.innerHeight * dpr;
-        canvas.style.width = window.innerWidth + 'px';
-        canvas.style.height = window.innerHeight + 'px';
+        let w = window.innerWidth;
+        let h = window.innerHeight;
+        canvas.width = Math.round(w * dpr);
+        canvas.height = Math.round(h * dpr);
+        canvas.style.width = w + 'px';
+        canvas.style.height = h + 'px';
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-        this.cols = Math.floor(window.innerWidth / this.resolution);
-        this.rows = Math.floor(window.innerHeight / this.resolution);
+        this.cols = Math.floor(w / this.resolution);
+        this.rows = Math.floor(h / this.resolution);
         this.grid = new Array(this.cols).fill(null).map(() => new Array(this.rows).fill(null).map(() => ({ alive: 0, hue: 0 })));
     }
 
